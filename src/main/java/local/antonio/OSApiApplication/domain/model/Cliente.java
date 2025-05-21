@@ -9,31 +9,40 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import java.util.Objects;
 
-/**
- *
- * @author sesideva
- */
 @Entity
 public class Cliente {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String nome;
-    private String email;
-    
-    @Column(name = "telefone")
-    private String fone;
 
-    public Cliente() {
+    @NotBlank
+    @Size(max = 60)
+    private String nome;
+
+    @NotBlank
+    @Email
+    @Size(max = 255)
+    private String email;
+
+    @NotBlank
+    @Size(max = 20)
+    @Column(name = "telefone")
+    private String telefone;
+
+    public Cliente() {  
     }
 
-    public Cliente(long id, String nome, String email, String fone) {
+    public Cliente(long id, String nome, String email, String telefone) {
         this.id = id;
         this.nome = nome;
         this.email = email;
-        this.fone = fone;
+        this.telefone = telefone;
     }
 
     public long getId() {
@@ -60,33 +69,24 @@ public class Cliente {
         this.email = email;
     }
 
-    public String getFone() {
-        return fone;
+    public String getTelfone() {
+        return telefone;
     }
 
-    public void setFone(String fone) {
-        this.fone = fone;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + (int) (this.id ^ (this.id >>> 32));
-        return hash;
+        return Objects.hash(id);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Cliente other = (Cliente) obj;
-        return this.id == other.id;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Cliente other = (Cliente) obj;
+        return id == other.id;
     }
 }
